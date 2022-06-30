@@ -1,10 +1,28 @@
 import './App.css';
+import Home from './Component/Home';
+import NavBar from './Component/NavBar';
+import {BrowserRouter,Routes,Route,} from "react-router-dom";
+import Development from './Component/Department/Development';
+import Designing from './Component/Department/Designing';
+import Contentteam from './Component/Department/Contentteam';
+import Digitalteam from './Component/Department/Digitalteam';
+import Contractors from './Component/Department/Contractors';
+import QATeam from './Component/Department/QATeam';
 
 function App() {
   return (
-    <div className="App">
-   <p>Syrus</p>
-    </div>
+    <BrowserRouter>
+    <NavBar/>
+    <Routes>
+      <Route path="/" element={<Home />}/>
+      <Route path="Development" element={<Development />}/> 
+      <Route path="Designing" element={<Designing />}/> 
+      <Route path="Contentteam" element={<Contentteam />}/> 
+      <Route path="Digitalteam" element={<Digitalteam />}/> 
+      <Route path="Contractors" element={<Contractors />}/> 
+      <Route path="QATeam" element={<QATeam />}/> 
+    </Routes>
+  </BrowserRouter>
   );
 }
 
