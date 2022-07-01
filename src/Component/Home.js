@@ -5,7 +5,7 @@ function Home() {
     return (
         <div className='container mt-3'>
            
-           <img src={resphoto} className='img-fluid' width='100%'/>
+           <img src={resphoto} className='img-fluid'alt="" width='100%'/>
         </div>
     )
 }
