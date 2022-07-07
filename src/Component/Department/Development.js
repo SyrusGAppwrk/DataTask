@@ -28,6 +28,7 @@ function Development() {
   const [showDelete, setShowDelete] = useState(false);
   //
   //User States
+  const [Userproject, setUserproject] = useState()
   const [Userlist, setuserlist] = useState()
   const [projectlist, setprojectlist] = useState()
   const [pcList, setpcList] = useState()
@@ -39,12 +40,25 @@ function Development() {
 
   // Functions
   useEffect(() => {
+    handleuserprojectlist()
     handleusertlist()
     handleprojectlist()
     handlepclist()
     handlepmlist()
   }, [])
 
+  // Get  "Userproject list"
+  const handleuserprojectlist = () => {
+    ExportApi.GetUserProject().then(
+      (resp) => {
+        if (resp.ok) {
+          let Data = resp.data;
+          setUserproject(Data)
+
+        }
+      }
+    );
+  };
   // Get  "Userlist"
   const handleusertlist = () => {
     ExportApi.UserByDepartment(1).then(
@@ -182,15 +196,15 @@ function Development() {
                   </tr>
                 </thead>
                 <tbody>
-                  {projectlist.map((data, i) => (
+                  {Userproject.map((data, i) => (
                     <tr key={data.id}>
                       <th scope='row' >{i + 1}</th>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
+                      <td>{data.userName}</td>
+                      <td>{data.projectName}</td>
+                      <td>{data.avalibiltty}</td>
+                      <td>{data.totalBilling}</td>
+                      <td>{data.cordinatorName}</td>
+                      <td>{data.managerName}</td>
                       <td><i onClick={() => editHandler(data.id)} style={{ cursor: "pointer" }} >
                         <FaPencilAlt
                           onMouseOver={({ target }) => target.style.color = "blue"}

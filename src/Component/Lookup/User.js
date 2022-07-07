@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import * as Yup from 'yup';
 import Constanttext from '../Constant/Constanttext';
 
+
 //validation
 const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required!'),
@@ -17,6 +18,8 @@ const validationSchema = Yup.object().shape({
 
 
 function User() {
+
+  
     // alert toast 
     const notify = () => toast.success('Sucessfully Inserted!')
     const Updatealert = () => toast.success('Sucessfully Updated!')
@@ -100,7 +103,7 @@ function User() {
         setIsPost(false);
         handleShow()
     };
-
+   
     //----------------- Update Data
     const handleusersdataupdate = async (values, resetForm) => {
         await ExportApi.Updateuserdata(
@@ -115,7 +118,7 @@ function User() {
                     //let Data = resp.data;
                     resetForm();
                     setShow(false)
-                    handleusers()
+                    window.location.reload()
                     Updatealert()
                 }
             }

@@ -29,6 +29,10 @@ const ProjectUpdate = (id, name, status) =>
 const GetDepartment = () =>
     BaseApi.get(`Department`)
 
+//Get Project Code 
+const GetUserProject=()=>
+BaseApi.get('UserProject')
+
 
 
 
@@ -46,6 +50,9 @@ export default {
 
     // Department 
     GetDepartment,
+    
+    //userProject 
+    GetUserProject,
 
 };
 
