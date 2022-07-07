@@ -8,8 +8,12 @@ import Digitalteam from './Component/Department/Digitalteam';
 import Contractors from './Component/Department/Contractors';
 import QATeam from './Component/Department/QATeam';
 import NavbarLayout from './NavbarLayout';
+import Project from './Component/Lookup/Project';
+import ProjectCor from './Component/Lookup/ProjectCor';
+import ProjectManger from './Component/Lookup/ProjectManger';
+import User from './Component/Lookup/User';
 
-function App() {
+function App() {  
   return (
     <BrowserRouter>
     <NavbarLayout/>
@@ -22,7 +26,10 @@ function App() {
       <Route path="Digitalteam" element={<Digitalteam />}/> 
       <Route path="Contractors" element={<Contractors />}/> 
       <Route path="QATeam" element={<QATeam />}/> 
-      
+      <Route path="Project" element={<Project />}/> 
+      <Route path="Pc" element={<ProjectCor />}/> 
+      <Route path="Pm" element={<ProjectManger />}/> 
+      <Route path="user" element={<User />}/> 
     </Routes>
   </BrowserRouter>
   );
