@@ -18,12 +18,12 @@ const Projectdata = () =>
     BaseApi.get(`Project`);
 
 // Post Project 
-const ProjectPost = (name, status) =>
-    BaseApi.post(`Project`, { name: name, status: status })
+const ProjectPost = (name,Client,platform,status) =>
+    BaseApi.post(`Project`, { name: name,ClientName:Client,Platformm:platform,status: status })
 
 //Put Project
-const ProjectUpdate = (id, name, status) =>
-    BaseApi.put(`Project/` + id, { id: id, name: name, status: status })
+const ProjectUpdate = (id, name,Client,platform,status) =>
+    BaseApi.put(`Project/` + id, { id: id, name: name,ClientName:Client,Platformm:platform,status: status })
 
 // Get Department
 const GetDepartment = () =>

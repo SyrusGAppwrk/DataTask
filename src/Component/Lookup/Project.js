@@ -11,6 +11,8 @@ import Constanttext from '../Constant/Constanttext';
 //validation
 const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required!'),
+    Client: Yup.string().required('Required!'),
+    platform: Yup.string().required('Required!'),
     status: Yup.number().required('Status is required!'),
 
 });
@@ -45,6 +47,7 @@ function Project() {
                if (resp.ok) {
                    let Data = resp.data;
                    setprojectlist(Data)
+                   
                }
            }
        );
@@ -62,6 +65,9 @@ function Project() {
    const handleprojectdata = async (values, resetForm) => {
        await ExportApi.ProjectPost(
            values.name,
+           values.name,
+           values.Client,
+           values.platform,
            values.status
        ).then(
            (resp) => {
@@ -89,6 +95,8 @@ function Project() {
        await ExportApi.ProjectUpdate(
            SelectedId,
            values.name,
+           values.Client,
+           values.platform,
            values.status
        ).then(
            (resp) => {
@@ -132,6 +140,8 @@ function Project() {
                                    <tr >
                                        <th scope="col">S.No</th>
                                        <th scope="col">Project Name</th>
+                                       <th scope="col">Client Name</th>
+                                       <th scope="col">PlatForm</th>
                                        <th scope="col">Status</th>
                                        <th scope="col">Action</th>
                                    </tr>
@@ -141,6 +151,8 @@ function Project() {
                                        <tr key={data.id}>
                                            <th scope='row' >{i + 1}</th>
                                            <td>{data.name}</td>
+                                           <td>{data.clientName}</td> 
+                                           <td>{data.platformm}</td> 
                                            <td>{data.status === 1 ?
                                                Constanttext.active : Constanttext.InActive}</td>
                                            <td><i onClick={() => editHandler(data.id)} style={{ cursor: "pointer" }} >
@@ -170,7 +182,9 @@ function Project() {
                        <Formik
                            initialValues={{
                                name: isPost ? "" : editData[0].name,
-                               status: isPost ? "" : editData[0].status
+                               status: isPost ? "" : editData[0].status,
+                               Client: isPost ? "" : editData[0].clientName,
+                               platform: isPost ? "" : editData[0].platformm
                            }}
 
                            onSubmit={(values, { resetForm }) => {
@@ -196,8 +210,41 @@ function Project() {
                                            <div style={{ color: "red" }}>{errors.name}</div>
                                        ) : null}
                                    </div>
+                                   <div className="form-group">
+                                       <label htmlFor="name">Client Name</label>
+                                       <input type="text"
+                                           className="form-control mt-2"
+                                           placeholder="e.g "
+                                           name="Client"
+                                           id="Client"
+                                           onChange={handleChange}
+                                           onBlur={handleBlur}
+                                           value={values.Client}
+                                       />
+                                       {errors.name && touched.Client ? (
+                                           <div style={{ color: "red" }}>{errors.Client}</div>
+                                       ) : null}
+                                   </div>
 
-
+                                   <div className="form-group">
+                                       <label htmlFor="platform"> Platform </label>
+                                       <select
+                                           name='platform'
+                                           id='platform'
+                                           className='form-control input-default mt-2'
+                                           onBlur={handleBlur}
+                                           value={values.platform}
+                                           onChange={handleChange}
+                                       >
+                                           <option selected> Select Platform</option>
+                                           <option value={"Upwork"}>Upwork</option>
+                                           <option value={"LinkedIn"}>LinkedIn</option>
+                                           <option value={"Direct"}>Direct</option>
+                                       </select>
+                                       {errors.platform && touched.platform ? (
+                                           <div style={{ color: "red" }}>{errors.platform}</div>
+                                       ) : null}
+                                   </div>
                                    <div className="form-group">
                                        <label htmlFor="status"> Status </label>
                                        <select

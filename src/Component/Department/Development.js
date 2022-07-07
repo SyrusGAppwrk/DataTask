@@ -196,27 +196,28 @@ function Development() {
                   </tr>
                 </thead>
                 <tbody>
+                 
                   {Userproject.map((data, i) => (
-                    <tr key={data.id}>
-                      <th scope='row' >{i + 1}</th>
-                      <td>{data.userName}</td>
-                      <td>{data.projectName}</td>
-                      <td>{data.avalibiltty}</td>
-                      <td>{data.totalBilling}</td>
-                      <td>{data.cordinatorName}</td>
-                      <td>{data.managerName}</td>
-                      <td><i onClick={() => editHandler(data.id)} style={{ cursor: "pointer" }} >
-                        <FaPencilAlt
-                          onMouseOver={({ target }) => target.style.color = "blue"}
-                          onMouseOut={({ target }) => target.style.color = "black"} /> </i>
+                  
+                  <tr key={data.id} style={{backgroundColor:data.avalibiltty=='Yes'?Constanttext.lightgreen:" "}}>
+                  <th scope='row' >{i + 1}</th>
+                  <td>{data.userName}</td>
+                  <td>{data.projectName}</td>
+                  <td>{data.avalibiltty}</td>
+                  <td>{data.totalBilling}</td>
+                  <td>{data.cordinatorName}</td>
+                  <td>{data.managerName}</td>
+                  <td><i onClick={() => editHandler(data.id)} style={{ cursor: "pointer" }} >
+                    <FaPencilAlt
+                      onMouseOver={({ target }) => target.style.color = "blue"}
+                      onMouseOut={({ target }) => target.style.color = "black"} /> </i>
 
-                        {/* &nbsp; <i onClick={() => deleteData(data.id)} style={{ cursor: "pointer" }}>
-                                                   <FaTrashAlt
-                                                       onMouseOver={({ target }) => target.style.color = "red"}
-                                                       onMouseOut={({ target }) => target.style.color = "black"} /> </i> */}
-                      </td>
-
-                    </tr>
+                    {/* &nbsp; <i onClick={() => deleteData(data.id)} style={{ cursor: "pointer" }}>
+                                               <FaTrashAlt
+                                                   onMouseOver={({ target }) => target.style.color = "red"}
+                                                   onMouseOut={({ target }) => target.style.color = "black"} /> </i> */}
+                  </td>
+                </tr>
                   ))}
                 </tbody>
               </table>
@@ -288,16 +289,19 @@ function Development() {
                     ) : null}
                   </div>
                   <div className="form-group">
-                    <label htmlFor="avail">Availablity</label>
-                    <input type="text"
-                      className="form-control mt-2"
-                      placeholder="e.g "
-                      name="avail"
-                      id="avail"
-                      onChange={handleChange}
+                    <label htmlFor="PC">Availablity</label>
+                    <select
+                      name='avail'
+                      id='avail'
+                      className='form-control input-default mt-2'
                       onBlur={handleBlur}
                       value={values.avail}
-                    />
+                      onChange={handleChange}
+                    >
+                      <option value={""}>Select Availablity</option>
+                      <option value={"Yes"}>Available</option>
+                      <option value={"No"}>Not Available</option>
+                    </select>
                     {errors.avail && touched.avail ? (
                       <div style={{ color: "red" }}>{errors.avail}</div>
                     ) : null}
