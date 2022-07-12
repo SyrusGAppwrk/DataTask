@@ -222,7 +222,7 @@ function ProjectManger() {
                                          <div style={{ color: "red" }}>{errors.status}</div>
                                      ) : null}
                                  </div>
-                                 <button type="submit" className="btn btn-warning mt-2" style={{ float: "right" }}>.
+                                 <button type="submit" className="btn btn-warning mt-2" style={{ float: "right" }}>
                                      {isPost ? Constanttext.addData : Constanttext.editData}</button>
                              </Form>
                          )}

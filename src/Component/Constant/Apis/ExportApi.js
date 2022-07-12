@@ -29,10 +29,17 @@ const ProjectUpdate = (id, name,Client,platform,status) =>
 const GetDepartment = () =>
     BaseApi.get(`Department`)
 
-//Get Project Code 
-const GetUserProject=()=>
-BaseApi.get('UserProject')
+//Get User Project response
+const GetUserProject=(Depid)=>
+BaseApi.get(`v2?Depid=` + Depid)
 
+//post UserProject Data
+const PostUserProject=(user,Project,avail,bill,PC,PM,status)=>
+BaseApi.post(`v2`,{userId:user,projectid:Project,pcid:PC,pmid:PM,avalibiltty:avail,totalBilling:bill,status: status})
+
+//Update UserProject
+const PutUserProject=(id,user,Project,avail,bill,PC,PM,status)=>
+BaseApi.put(`v2/`+id,{id:id,userId:user,projectid:Project,pcid:PC,pmid:PM,avalibiltty:avail,totalBilling:bill,status: status})
 
 
 
@@ -53,6 +60,7 @@ export default {
     
     //userProject 
     GetUserProject,
-
+    PostUserProject,
+    PutUserProject,
 };
 

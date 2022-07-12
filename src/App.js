@@ -1,7 +1,7 @@
 import './App.css';
 import Home from './Component/Home';
 import {BrowserRouter,Routes,Route,} from "react-router-dom";
-import Development from './Component/Department/Development';
+import DepartmentFunction from './Component/Department/DepartmentFunction';
 import Designing from './Component/Department/Designing';
 import Contentteam from './Component/Department/Contentteam';
 import Digitalteam from './Component/Department/Digitalteam';
@@ -20,7 +20,7 @@ function App() {
     
     <Routes>
       <Route path="/" element={<Home />}/>
-      <Route path="Development" element={<Development />}/> 
+      <Route path="Development" element={<DepartmentFunction />}/> 
       <Route path="Designing" element={<Designing />}/> 
       <Route path="Contentteam" element={<Contentteam />}/> 
       <Route path="Digitalteam" element={<Digitalteam />}/> 

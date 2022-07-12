@@ -90,6 +90,7 @@ function User() {
                     resetForm();
                     setShow(false)
                     handleusers()
+                    window.location.reload()
                     notify()
                 }
             }
@@ -223,7 +224,7 @@ function User() {
 
                         >
                             {({ errors, touched, values, handleChange, handleBlur }) => (
-                                <Form>
+                                <Form autoComplete='off'>
                                     <div className="form-group">
                                         <label htmlFor="department"> Department</label>
                                         <select
@@ -279,7 +280,7 @@ function User() {
                                             <div style={{ color: "red" }}>{errors.status}</div>
                                         ) : null}
                                     </div>
-                                    <button type="submit" className="btn btn-warning mt-2" style={{ float: "right" }}>.
+                                    <button type="submit" className="btn btn-warning mt-2" style={{ float: "right" }}>
                                         {isPost ? Constanttext.addData : Constanttext.editData}</button>
                                 </Form>
                             )}

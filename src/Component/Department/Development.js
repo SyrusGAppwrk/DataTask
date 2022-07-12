@@ -1,22 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { Formik, Form } from 'formik';
 import ExportApi from '../Constant/Apis/ExportApi';
-import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
+import { FaPencilAlt } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
-import * as Yup from 'yup';
+//import * as Yup from 'yup';
 import Constanttext from '../Constant/Constanttext';
 
-//validation
-const validationSchema = Yup.object().shape({
-  name: Yup.string().required('Name is required!'),
-  status: Yup.number().required('Status is required!'),
 
-});
-
-
-function Development() {
+function Development(props) {
   // alert toast 
   const notify = () => toast.success('Sucessfully Inserted!')
   const Updatealert = () => toast.success('Sucessfully Updated!')
@@ -28,95 +21,35 @@ function Development() {
   const [showDelete, setShowDelete] = useState(false);
   //
   //User States
-  const [Userproject, setUserproject] = useState()
-  const [Userlist, setuserlist] = useState()
-  const [projectlist, setprojectlist] = useState()
-  const [pcList, setpcList] = useState()
-  const [pmList, setpmList] = useState()
   const [isPost, setIsPost] = useState(true);
   const [editData, setEditData] = useState("");
   const [SelectedId, setSelectedId] = useState("");
 
 
-  // Functions
+  //Props Data
+  var getdatafuction=props.updata
+
+  //-------
   useEffect(() => {
-    handleuserprojectlist()
-    handleusertlist()
-    handleprojectlist()
-    handlepclist()
-    handlepmlist()
+    getdatafuction(1)
+
   }, [])
 
-  // Get  "Userproject list"
-  const handleuserprojectlist = () => {
-    ExportApi.GetUserProject().then(
-      (resp) => {
-        if (resp.ok) {
-          let Data = resp.data;
-          setUserproject(Data)
-
-        }
-      }
-    );
-  };
-  // Get  "Userlist"
-  const handleusertlist = () => {
-    ExportApi.UserByDepartment(1).then(
-      (resp) => {
-        if (resp.ok) {
-          let Data = resp.data;
-          setuserlist(Data)
-        }
-      }
-    );
-  };
-  // Get  "projectlist"
-  const handleprojectlist = () => {
-    ExportApi.Projectdata().then(
-      (resp) => {
-        if (resp.ok) {
-          let Data = resp.data;
-          setprojectlist(Data)
-        }
-      }
-    );
-  };
-
-  // Get  "PC List"
-  const handlepclist = () => {
-    ExportApi.UserRole(2).then(
-      (resp) => {
-        if (resp.ok) {
-          let Data = resp.data;
-          setpcList(Data)
-        }
-      }
-    );
-  };
-
-  // Get  "PM List"
-  const handlepmlist = () => {
-    ExportApi.UserRole(3).then(
-      (resp) => {
-        if (resp.ok) {
-          let Data = resp.data;
-          setpmList(Data)
-        }
-      }
-    );
-  };
-  //-------
   //   post data prepare
   const newAddHandler = () => {
     setIsPost(true);
     handleShow()
   };
 
-
   //----------------- Insert Data 
-  const handleprojectdata = async (values, resetForm) => {
-    await ExportApi.ProjectPost(
-      values.name,
+  const handleuserdetaill = async (values, resetForm) => {
+    await ExportApi.PostUserProject(
+      values.user,
+      values.Project,
+      values.avail,
+      values.bill,
+      values.PC,
+      values.PM,
       values.status
     ).then(
       (resp) => {
@@ -124,7 +57,6 @@ function Development() {
           //let Data = resp.data;
           resetForm();
           setShow(false)
-          // handleproject()
           notify()
         }
       }
@@ -133,17 +65,22 @@ function Development() {
 
   //-------edit handler
   const editHandler = (id) => {
-    setEditData(projectlist.filter((fl) => fl.id === id));
+    setEditData(props.UserList.filter((fl) => fl.id === id));
     setSelectedId(id);
     setIsPost(false);
     handleShow()
   };
 
   //----------------- Update Data
-  const handleprojectdataupdate = async (values, resetForm) => {
-    await ExportApi.ProjectUpdate(
+  const handleupdate = async (values, resetForm) => {
+    await ExportApi.PutUserProject(
       SelectedId,
-      values.name,
+      values.user,
+      values.Project,
+      values.avail,
+      values.bill,
+      values.PC,
+      values.PM,
       values.status
     ).then(
       (resp) => {
@@ -151,24 +88,22 @@ function Development() {
           //let Data = resp.data;
           resetForm();
           setShow(false)
-          // handleproject()
           Updatealert()
         }
       }
     );
   };
-
+console.log(SelectedId)
   //----- delete data prepare
-  const deleteData = async (id) => {
-    setSelectedId(id);
-    setShowDelete(true);
-  };
+  // const deleteData = async (id) => {
+  //   setSelectedId(id);
+  //   setShowDelete(true);
+  // };
 
   //------Delete Function 
   // const modalDeleteHandle = async () => {
 
   //   };
-
 
 
   return (
@@ -181,7 +116,7 @@ function Development() {
             >Add Details</button>
           </div>
           <div className="card-body">
-            {projectlist && projectlist.length > 0 ? (
+            {props.UserList && props.UserList.length > 0 ? (
               <table className="table">
                 <thead>
                   <tr >
@@ -196,34 +131,30 @@ function Development() {
                   </tr>
                 </thead>
                 <tbody>
-                 
-                  {Userproject.map((data, i) => (
-                  
-                  <tr key={data.id} style={{backgroundColor:data.avalibiltty=='Yes'?Constanttext.lightgreen:" "}}>
-                  <th scope='row' >{i + 1}</th>
-                  <td>{data.userName}</td>
-                  <td>{data.projectName}</td>
-                  <td>{data.avalibiltty}</td>
-                  <td>{data.totalBilling}</td>
-                  <td>{data.cordinatorName}</td>
-                  <td>{data.managerName}</td>
-                  <td><i onClick={() => editHandler(data.id)} style={{ cursor: "pointer" }} >
-                    <FaPencilAlt
-                      onMouseOver={({ target }) => target.style.color = "blue"}
-                      onMouseOut={({ target }) => target.style.color = "black"} /> </i>
+                  <>
+                    {props.UserList.map((data, i) => (
 
-                    {/* &nbsp; <i onClick={() => deleteData(data.id)} style={{ cursor: "pointer" }}>
-                                               <FaTrashAlt
-                                                   onMouseOver={({ target }) => target.style.color = "red"}
-                                                   onMouseOut={({ target }) => target.style.color = "black"} /> </i> */}
-                  </td>
-                </tr>
-                  ))}
+                      <tr key={data.id}
+                        style={{ backgroundColor: data.avalibiltty === 'Yes' ? Constanttext.lightgreen : " " }}>
+                        <th scope='row' >{i + 1}</th>
+                        <td>{data.userName}</td>
+                        <td>{data.projectName}</td>
+                        <td>{data.avalibiltty}</td>
+                        <td>{data.totalBilling}</td>
+                        <td>{data.cordinatorName}</td>
+                        <td>{data.managerName}</td>
+                        <td><i onClick={() => editHandler(data.id)} style={{ cursor: "pointer" }} >
+                          <FaPencilAlt
+                            onMouseOver={({ target }) => target.style.color = "blue"}
+                            onMouseOut={({ target }) => target.style.color = "black"} /> </i>
+                        </td>
+                      </tr>
+                    ))}
+                  </>
                 </tbody>
               </table>
             ) : "No Data"}
           </div>
-
         </div>
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
@@ -232,18 +163,19 @@ function Development() {
           <Modal.Body>
             <Formik
               initialValues={{
-                user: isPost ? "" : editData[0].Project,
-                Project: isPost ? "" : editData[0].Project,
-                avail: isPost ? "" : editData[0].avail,
-                bill: isPost ? "" : editData[0].bill,
-                PC: isPost ? "" : editData[0].PC,
-                PM: isPost ? "" : editData[0].PM,
+                user: isPost ? "" : editData[0].userid,
+                Project: isPost ? "" : editData[0].projectid,
+                avail: isPost ? "" : editData[0].avalibiltty,
+                bill: isPost ? "" : editData[0].totalBilling,
+                PC: isPost ? "" : editData[0].pcid,
+                PM: isPost ? "" : editData[0].pmid,
+                status: isPost ? "" : editData[0].Status
               }}
 
               onSubmit={(values, { resetForm }) => {
-                isPost ? handleprojectdata(values, resetForm) : handleprojectdataupdate(values, resetForm);
+                isPost ? handleuserdetaill(values, resetForm) : handleupdate(values, resetForm);
               }}
-              validationSchema={validationSchema}
+            //validationSchema={validationSchema}
 
             >
               {({ errors, touched, values, handleChange, handleBlur }) => (
@@ -258,15 +190,14 @@ function Development() {
                       value={values.user}
                       onChange={handleChange}
                     >
-                       <option value={""}>Select User</option>
-                  {Userlist.map((d) => (
-                    <option key={d.id} value={d.id}>{d.name}</option>
-                  ))}
-
+                      <option value={""}>Select User</option>
+                      {props.list.map((d) => (
+                        <option key={d.id} value={d.id}>{d.name}</option>
+                      ))}
                     </select>
-                    {errors.user && touched.user ? (
+                    {/* {errors.user && touched.user ? (
                       <div style={{ color: "red" }}>{errors.user}</div>
-                    ) : null}
+                    ) : null} */}
                   </div>
                   <div className="form-group">
                     <label htmlFor="Project"> Project</label>
@@ -279,14 +210,14 @@ function Development() {
                       onChange={handleChange}
                     >
                       <option value={""}>Select Project</option>
-                      {projectlist.map((d) => (
+                      {props.Project.map((d) => (
                         <option key={d.id} value={d.id}>{d.name}</option>
                       ))}
 
                     </select>
-                    {errors.Project && touched.Project ? (
+                    {/* {errors.Project && touched.Project ? (
                       <div style={{ color: "red" }}>{errors.Project}</div>
-                    ) : null}
+                    ) : null} */}
                   </div>
                   <div className="form-group">
                     <label htmlFor="PC">Availablity</label>
@@ -302,13 +233,13 @@ function Development() {
                       <option value={"Yes"}>Available</option>
                       <option value={"No"}>Not Available</option>
                     </select>
-                    {errors.avail && touched.avail ? (
+                    {/* {errors.avail && touched.avail ? (
                       <div style={{ color: "red" }}>{errors.avail}</div>
-                    ) : null}
+                    ) : null} */}
                   </div>
                   <div className="form-group">
                     <label htmlFor="bill">Billing</label>
-                    <input type="number"
+                    <input type="text"
                       className="form-control mt-2"
                       placeholder="e.g 8.5 "
                       name="bill"
@@ -317,9 +248,9 @@ function Development() {
                       onBlur={handleBlur}
                       value={values.bill}
                     />
-                    {errors.bill && touched.bill ? (
+                    {/* {errors.bill && touched.bill ? (
                       <div style={{ color: "red" }}>{errors.bill}</div>
-                    ) : null}
+                    ) : null} */}
                   </div>
                   <div className="form-group">
                     <label htmlFor="PC"> Project Cordinator* </label>
@@ -332,14 +263,14 @@ function Development() {
                       onChange={handleChange}
                     >
                       <option value={""}>Select Cordinator</option>
-                      {pcList.map((d) => (
+                      {props.Pc.map((d) => (
                         <option key={d.id} value={d.id}>{d.name}</option>
                       ))}
 
                     </select>
-                    {errors.PC && touched.PC ? (
+                    {/* {errors.PC && touched.PC ? (
                       <div style={{ color: "red" }}>{errors.PC}</div>
-                    ) : null}
+                    ) : null} */}
                   </div>
                   <div className="form-group">
                     <label htmlFor="PM"> Project Manager* </label>
@@ -352,16 +283,34 @@ function Development() {
                       onChange={handleChange}
                     >
                       <option value={""}>Select Manager</option>
-                      {pmList.map((d) => (
+                      {props.Pm.map((d) => (
                         <option key={d.id} value={d.id}>{d.name}</option>
                       ))}
                     </select>
-                    {errors.PM && touched.PM ? (
+                    {/* {errors.PM && touched.PM ? (
                       <div style={{ color: "red" }}>{errors.PM}</div>
-                    ) : null}
+                    ) : null} */}
                   </div>
-                  <button type="submit" className="btn btn-warning mt-2" style={{ float: "right" }}> Submit </button>
-                  <button type="submit" className="btn btn-warning m-2" style={{ float: "right" }} onClick={handleClose}> Close </button>
+                  <div className="form-group">
+                    <label htmlFor="status"> Status </label>
+                    <select
+                      name='status'
+                      id='status'
+                      className='form-control input-default mt-2'
+                      onBlur={handleBlur}
+                      value={values.status}
+                      onChange={handleChange}
+                    >
+                      <option selected> Select Status</option>
+                      <option value={1}>Active</option>
+                      <option value={0}>InActive</option>
+                    </select>
+                    {/* {errors.status && touched.status ? (
+                      <div style={{ color: "red" }}>{errors.status}</div>
+                    ) : null} */}
+                  </div>
+                  <button type="submit" className="btn btn-warning mt-2" style={{ float: "right" }}>
+                                        {isPost ? Constanttext.addData : Constanttext.editData}</button>
                 </Form>
               )}
             </Formik>

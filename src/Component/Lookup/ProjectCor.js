@@ -186,7 +186,7 @@ function ProjectCor() {
 
                         >
                             {({ errors, touched, values, handleChange, handleBlur }) => (
-                                <Form>
+                                <Form autoComplete='off'>
                                     <div className="form-group">
                                         <label htmlFor="name">Name</label>
                                         <input type="text"
@@ -202,8 +202,6 @@ function ProjectCor() {
                                             <div style={{ color: "red" }}>{errors.name}</div>
                                         ) : null}
                                     </div>
-
-
                                     <div className="form-group">
                                         <label htmlFor="status"> Status </label>
                                         <select
@@ -222,7 +220,7 @@ function ProjectCor() {
                                             <div style={{ color: "red" }}>{errors.status}</div>
                                         ) : null}
                                     </div>
-                                    <button type="submit" className="btn btn-warning mt-2" style={{ float: "right" }}>.
+                                    <button type="submit" className="btn btn-warning mt-2" style={{ float: "right" }}>
                                         {isPost ? Constanttext.addData : Constanttext.editData}</button>
                                 </Form>
                             )}

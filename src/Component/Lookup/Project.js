@@ -65,7 +65,6 @@ function Project() {
    const handleprojectdata = async (values, resetForm) => {
        await ExportApi.ProjectPost(
            values.name,
-           values.name,
            values.Client,
            values.platform,
            values.status
@@ -263,7 +262,7 @@ function Project() {
                                            <div style={{ color: "red" }}>{errors.status}</div>
                                        ) : null}
                                    </div>
-                                   <button type="submit" className="btn btn-warning mt-2" style={{ float: "right" }}>.
+                                   <button type="submit" className="btn btn-warning mt-2" style={{ float: "right" }}>
                                        {isPost ? Constanttext.addData : Constanttext.editData}</button>
                                </Form>
                            )}
